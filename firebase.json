@@ -1,0 +1,33 @@
+{
+  "hosting": [
+    {
+      "target": "web",
+      "public": "web/out",
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+      "cleanUrls": true,
+      "trailingSlash": false
+    },
+    {
+      "target": "admin",
+      "public": "admin/out",
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+      "cleanUrls": true,
+      "trailingSlash": false,
+      "headers": [
+        {
+          "source": "**",
+          "headers": [
+            {
+              "key": "X-Robots-Tag",
+              "value": "noindex, nofollow, noarchive, nosnippet"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  }
+}
