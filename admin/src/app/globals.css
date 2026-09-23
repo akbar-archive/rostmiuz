@@ -1,0 +1,171 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Removes the gray flash Android/iOS paint on every tap — the app
+     already gives its own hover/active feedback, this default just
+     looks unpolished on top of it. */
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* iOS Safari auto-zooms the whole page in on focus for any text input
+   under 16px — disorienting mid-type on a phone, and easy to mistake for
+   focus "jumping" elsewhere. The rest of the app can stay on text-sm;
+   this only bumps the actually-focusable form controls, and only below
+   the sm breakpoint where the zoom behavior kicks in. */
+@media (max-width: 639px) {
+  input,
+  textarea,
+  select {
+    font-size: 16px;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/*
+ * Opacity-only on purpose: animating `transform` here would make this
+ * element a CSS containing block for the rest of the animation's
+ * lifetime (transform persists after "both" fill-mode), which breaks
+ * any `position: fixed` modal rendered inside it (e.g. the page
+ * template wraps every route, including the preview modal).
+ */
+.animate-fade-in {
+  animation: fade-in 0.28s ease-out both;
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-pop-in {
+  animation: pop-in 0.18s ease-out both;
+}
+
+/* --- Fun, playful feedback — deliberately not another "lift on hover" --- */
+
+@keyframes wiggle {
+  0%,
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+  25% {
+    transform: rotate(-8deg) scale(1.08);
+  }
+  75% {
+    transform: rotate(8deg) scale(1.08);
+  }
+}
+
+/* @utility (not a plain class) so Tailwind can compile variants of it,
+   like `group-hover:animate-wiggle` or `hover:animate-wiggle`. */
+@utility animate-wiggle {
+  animation: wiggle 0.4s ease-in-out;
+}
+
+@keyframes pin-drop {
+  0% {
+    transform: translateY(-32px) scale(0.5);
+    opacity: 0;
+  }
+  60% {
+    transform: translateY(4px) scale(1.08);
+    opacity: 1;
+  }
+  80% {
+    transform: translateY(-2px) scale(0.98);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* "backwards" only, not "both": applies the 0% keyframe during the
+   staggered delay (no flash-then-jump), but releases the transform once
+   the animation ends so it doesn't keep outranking the marker's own
+   hover:scale transition afterward. */
+.animate-pin-drop {
+  animation: pin-drop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+}
+
+@keyframes pop-bounce {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-pop-bounce {
+  animation: pop-bounce 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes confetti-burst {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--dx), var(--dy)) scale(0);
+    opacity: 0;
+  }
+}
+
+.confetti-particle {
+  animation: confetti-burst 0.7s ease-out forwards;
+}
+
+/* Bouncy press feedback for primary buttons — replaces a flat linear
+   active:scale with a spring overshoot so taps feel tactile. */
+.press-bounce {
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.press-bounce:active {
+  transform: scale(0.88);
+}

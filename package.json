@@ -1,0 +1,20 @@
+{
+  "name": "rostmiuz",
+  "private": true,
+  "workspaces": ["web", "admin"],
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  },
+  "scripts": {
+    "dev": "concurrently -n web,admin -c blue,magenta \"npm:dev:web\" \"npm:dev:admin\"",
+    "dev:web": "npm run dev -w web",
+    "dev:admin": "npm run dev -w admin",
+    "build": "npm run build -w web && npm run build -w admin",
+    "build:web": "npm run build -w web",
+    "build:admin": "npm run build -w admin",
+    "lint": "npm run lint -w web && npm run lint -w admin",
+    "deploy": "npm run build && firebase deploy --only hosting",
+    "deploy:web": "npm run build:web && firebase deploy --only hosting:web",
+    "deploy:admin": "npm run build:admin && firebase deploy --only hosting:admin"
+  }
+}

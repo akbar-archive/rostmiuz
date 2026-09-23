@@ -1,0 +1,18 @@
+{
+  "projects": {
+    "default": "rostmiuz"
+  },
+  "targets": {
+    "rostmiuz": {
+      "hosting": {
+        "web": [
+          "rostmiuz"
+        ],
+        "admin": [
+          "rostmiuz-admin"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}
